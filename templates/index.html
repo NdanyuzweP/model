@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Kigali Traffic Congestion Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-traffic-light me-2"></i>
+                <span class="fw-bold">Kigali Traffic AI</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="#predictor">Predictor</a>
+                <a class="nav-link" href="#api">API</a>
+                <a class="nav-link" href="/docs" target="_blank">Docs</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="display-4 fw-bold mb-4">
+                            AI-Powered Traffic Prediction
+                            <span class="text-gradient">for Kigali</span>
+                        </h1>
+                        <p class="lead mb-4 text-muted">
+                            Advanced machine learning algorithms predict traffic congestion levels 
+                            across Kigali's major roads, helping you plan better routes and avoid delays.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">95%</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Major Roads</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Monitoring</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-visual">
+                        <div class="traffic-animation">
+                            <div class="road">
+                                <div class="car car-1"></div>
+                                <div class="car car-2"></div>
+                                <div class="car car-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Predictor Section -->
+    <section id="predictor" class="predictor-section">
+        <div class="container">
+            <div class="row">
+                <!-- Input Panel -->
+                <div class="col-lg-5">
+                    <div class="input-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-sliders-h"></i> Prediction Parameters</h3>
+                            <p class="text-muted">Configure traffic prediction parameters</p>
+                        </div>
+                        
+                        <form id="predictionForm" class="prediction-form">
+                            <!-- Time Settings -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-clock"></i> Time Settings
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-12 col-md-6">
+                                        <label for="hour" class="form-label">Hour of Day</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="hour" min="0" max="23" value="8" required inputmode="numeric">
+                                            <span class="input-group-text">:00</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label for="dayOfWeek" class="form-label">Day of Week</label>
+                                        <select class="form-select" id="dayOfWeek" required>
+                                            <option value="">Select day...</option>
+                                            <option value="Monday">Monday</option>
+                                            <option value="Tuesday">Tuesday</option>
+                                            <option value="Wednesday">Wednesday</option>
+                                            <option value="Thursday">Thursday</option>
+                                            <option value="Friday">Friday</option>
+                                            <option value="Saturday">Saturday</option>
+                                            <option value="Sunday">Sunday</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Road Settings -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-road"></i> Road Settings
+                                </label>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="roadName" class="form-label">Road Name</label>
+                                        <select class="form-select" id="roadName" required>
+                                            <option value="">Select road...</option>
+                                            <option value="KG 11 Ave">KG 11 Ave</option>
+                                            <option value="KK 15 Rd">KK 15 Rd</option>
+                                            <option value="KN 1 Rd">KN 1 Rd</option>
+                                            <option value="KN 3 Rd">KN 3 Rd</option>
+                                            <option value="RN1">RN1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Environmental Factors -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-cloud"></i> Environmental Factors
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-12 col-md-6">
+                                        <label for="populationDensity" class="form-label">Population Density</label>
+                                        <select class="form-select" id="populationDensity" required>
+                                            <option value="">Select density...</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="High">High</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label for="rainfall" class="form-label">Rainfall</label>
+                                        <select class="form-select" id="rainfall" required>
+                                            <option value="">Select condition...</option>
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Special Conditions -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar-alt"></i> Special Conditions
+                                </label>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="publicHoliday" class="form-label">Public Holiday</label>
+                                        <select class="form-select" id="publicHoliday" required>
+                                            <option value="">Select...</option>
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-magic"></i> Generate Prediction
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="col-lg-7">
+                    <div class="results-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-chart-line"></i> Prediction Results</h3>
+                            <p class="text-muted">Real-time traffic analysis results</p>
+                        </div>
+                        
+                        <div id="loading" class="loading-state d-none">
+                            <div class="loading-animation">
+                                <div class="spinner"></div>
+                                <p>Analyzing traffic patterns...</p>
+                            </div>
+                        </div>
+
+                        <div id="results" class="results-content d-none">
+                            <div class="prediction-summary">
+                                <div class="congestion-indicator">
+                                    <div id="congestionIcon" class="indicator-icon"></div>
+                                    <div class="indicator-text">
+                                        <h2 id="congestionLevel" class="congestion-title"></h2>
+                                        <p class="congestion-description" id="congestionDescription"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="confidence-meter">
+                                    <div class="meter-label">Confidence Level</div>
+                                    <div class="progress">
+                                        <div id="confidenceBar" class="progress-bar" role="progressbar"></div>
+                                    </div>
+                                    <div class="confidence-score">
+                                        <span id="confidenceScore"></span>% confidence
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="prediction-details">
+                                <h5><i class="fas fa-info-circle"></i> Analysis Details</h5>
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Time:</span>
+                                        <span id="resultTime"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Road:</span>
+                                        <span id="resultRoad"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Conditions:</span>
+                                        <span id="resultConditions"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Analysis Time:</span>
+                                        <span id="resultTimestamp"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recommendations">
+                                <h5><i class="fas fa-lightbulb"></i> Recommendations</h5>
+                                <div id="recommendations" class="recommendations-list">
+                                    <!-- Recommendations will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="error" class="error-state d-none">
+                            <div class="error-content">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h4>Prediction Error</h4>
+                                <p id="errorMessage"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section
+    <section id="api" class="api-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="api-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-code"></i> API Information</h3>
+                            <p class="text-muted">Developer resources and documentation</p>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="api-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <h5>API Documentation</h5>
+                                    <p>Interactive API documentation with examples and testing interface.</p>
+                                    <a href="/docs" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-external-link-alt"></i> Open Docs
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="api-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-heartbeat"></i>
+                                    </div>
+                                    <h5>Health Check</h5>
+                                    <p>Monitor API health status and model availability.</p>
+                                    <a href="/health" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-external-link-alt"></i> Check Health
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="api-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <h5>Model Info</h5>
+                                    <p>Detailed information about the prediction model and available categories.</p>
+                                    <a href="/model-info" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-external-link-alt"></i> View Info
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h5><i class="fas fa-terminal"></i> Quick API Test</h5>
+                            <p>Test the API directly with this sample request:</p>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span>cURL Example</span>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre><code>curl -X POST "http://localhost:8000/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Hour": 8,
+    "Day_of_Week": "Monday",
+    "Public_Holiday": "No",
+    "Road_Name": "KN 1 Rd",
+    "Population_Density": "High",
+    "Rainfall": "No"
+  }'</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-traffic-light"></i> Kigali Traffic AI</h5>
+                    <p class="text-muted">Advanced traffic prediction powered by machine learning.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted">© 2024 Kigali Traffic Prediction System</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Floating Action Button -->
+    <div class="mobile-fab d-md-none">
+        <button class="fab-button" onclick="scrollToPredictor()">
+            <i class="fas fa-magic"></i>
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        function scrollToPredictor() {
+            document.getElementById('predictor').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic
+pandas
+scikit-learn
+joblib
+python-multipart
+jinja2
+aiofiles
+python-dotenv 
